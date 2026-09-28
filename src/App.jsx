@@ -234,6 +234,20 @@ const [formularioPedido, setFormularioPedido] = useState(false)
   })
 const [procesandoPedido, setProcesandoPedido] = useState(false)
 const [estadoPedido, setEstadoPedido] = useState("pendiente")
+  const [estadoPago, setEstadoPago] = useState(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const status = params.get("status")
+
+    if (status === "approved") {
+      setEstadoPago("approved")
+    } else if (status === "pending") {
+      setEstadoPago("pending")
+    } else if (status === "rejected") {
+      setEstadoPago("rejected")
+    }
+  }, [])
   useEffect(() => {
     const pedidoActivo =
       sessionStorage.getItem("pedidoEnviadoActivo") === "true"
@@ -1546,6 +1560,59 @@ strokeLinejoin="round"
       marginBottom: '20px'
     }}
   >
+<div
+  style={{
+    marginTop: '20px',
+    marginBottom: '20px',
+    padding: '15px',
+    border: '1px solid #ddd',
+    borderRadius: '10px',
+    background: '#fff'
+  }}
+>
+  <div
+    style={{
+      fontSize: '18px',
+      fontWeight: 'bold',
+      textAlign: 'left',
+      marginBottom: '20px'
+    }}
+  >
+    💳 ESTADO DEL PAGO
+  </div>
+
+  <div
+    style={{
+      fontSize: '22px',
+      fontWeight: '800',
+      textAlign: 'center',
+      marginBottom: '10px'
+    }}
+  >
+    {estadoPago === "approved"
+      ? "🟢 Pago realizado"
+      : estadoPago === "pending"
+      ? "🟠 Pago pendiente"
+      : "🔴 Pago rechazado"}
+  </div>
+
+  <div
+    style={{
+      marginTop: '10px',
+      fontSize: '14px',
+      color: '#666',
+      lineHeight: '1.4',
+      textAlign: 'center'
+    }}
+  >
+    {estadoPago === "approved"
+      ? "Tu pago con tarjeta fue aprobado correctamente."
+      : estadoPago === "pending"
+      ? "Estamos esperando la confirmación de tu pago."
+      : "El pago con tarjeta no pudo ser aprobado."}
+  </div>
+</div>
+
     ♨️ ESTADO DE TU PEDIDO :
   </div>
 
