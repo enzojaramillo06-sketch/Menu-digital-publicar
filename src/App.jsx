@@ -415,7 +415,11 @@ useEffect(() => {
         );
       }
 
-      window.location.href = pagoData.checkout_url;
+      sessionStorage.setItem("ultimoPedido", JSON.stringify(pedido))
+    sessionStorage.setItem("pantallaActual", "pedidoEnviado")
+    sessionStorage.setItem("pedidoEnviadoActivo", "true")
+
+    window.location.href = pagoData.checkout_url;
       return;
     }
 
