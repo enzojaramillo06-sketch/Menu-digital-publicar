@@ -373,6 +373,12 @@ useEffect(() => {
     total: totalFinal,
     estado: "pendiente"
   }]))
+    if (error) {
+      console.error("Error al guardar pedido antes del pago:", error)
+      setProcesandoPedido(false)
+      alert("No se pudo guardar el pedido. No se inició el pago. Detalle: " + (error.message || JSON.stringify(error)))
+      return
+    }
     if (medioPago === "Tarjeta") {
       const itemsMercadoPago = [
         ...carrito.map((producto) => ({
