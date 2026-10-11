@@ -237,17 +237,49 @@ const [estadoPedido, setEstadoPedido] = useState("pendiente")
   const [estadoPago, setEstadoPago] = useState(null)
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const status = params.get("status")
+    const sincronizarEstadoPago = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const estadoUrl = (
+        params.get("status") ||
+        params.get("collection_status") ||
+        params.get("payment_status") ||
+        ""
+      ).toLowerCase();
 
-    if (status === "approved") {
-      setEstadoPago("approved")
-    } else if (status === "pending") {
-      setEstadoPago("pending")
-    } else if (status === "rejected") {
-      setEstadoPago("rejected")
-    }
-  }, [])
+      if (!["approved", "pending", "rejected"].includes(estadoUrl)) return;
+
+      setEstadoPago(estadoUrl);
+
+      let pedidoGuardado = null;
+      try {
+        const guardado = sessionStorage.getItem("ultimoPedido");
+        if (guardado) pedidoGuardado = JSON.parse(guardado);
+      } catch (e) {
+        console.error("No se pudo recuperar el pedido:", e);
+      }
+
+      const numeroPedido =
+        params.get("external_reference") || pedidoGuardado?.numero;
+
+      if (!numeroPedido) {
+        console.error("No se encontró el número del pedido para actualizar estado_pago.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("pedidos")
+        .update({ estado_pago: estadoUrl })
+        .eq("numero_pedido", numeroPedido);
+
+      if (error) {
+        console.error("Error al actualizar estado_pago en Supabase:", error);
+      } else {
+        console.log("Estado de pago sincronizado:", numeroPedido, estadoUrl);
+      }
+    };
+
+    sincronizarEstadoPago();
+  }, []);
   useEffect(() => {
     const pedidoActivo =
       sessionStorage.getItem("pedidoEnviadoActivo") === "true"

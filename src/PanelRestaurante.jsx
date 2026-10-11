@@ -1100,6 +1100,7 @@ const imprimirPedido = (pedido) => {
           <div class="dato"><strong>Teléfono:</strong> ${escapar(pedido.telefono)}</div>
           <div class="dato"><strong>Ubicación:</strong> ${escapar(ubicacion)}</div>
           <div class="dato"><strong>Medio de pago:</strong> ${escapar(pedido.medio_pago)}</div>
+        <div class="dato"><strong>Estado del pago:</strong> ${escapar(pedido.estado_pago || "Sin registrar")}</div>
         </div>
 
         <h2>Productos</h2>
@@ -1845,6 +1846,8 @@ style={{flexShrink: 0, color: '#111'}}
 <line x1="3" y1="10" x2="21" y2="10" />
 </svg>
 <strong>Medio de pago:</strong> {pedido.medio_pago}
+                  <br />
+                  <strong>Estado del pago:</strong> {pedido.estado_pago || "Sin registrar"}
 </p>
           </div>
 
