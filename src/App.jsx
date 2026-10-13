@@ -1633,9 +1633,11 @@ strokeLinejoin="round"
   >
     {estadoPago === "approved"
       ? "🟢 Pago realizado"
-      : estadoPago === "pending"
-      ? "🟠 Pago pendiente"
-      : "🔴 Pago rechazado"}
+      : estadoPago === "pending" || estadoPago === "in_process"
+            ? "🟠 Pago pendiente / en verificación"
+            : estadoPago === "rejected"
+            ? "🔴 Pago rechazado"
+            : "🟠 Verificando pago"}
   </div>
 
   <div
@@ -1649,9 +1651,11 @@ strokeLinejoin="round"
   >
     {estadoPago === "approved"
       ? "Tu pago con tarjeta fue aprobado correctamente."
-      : estadoPago === "pending"
-      ? "Estamos esperando la confirmación de tu pago."
-      : "El pago con tarjeta no pudo ser aprobado."}
+      : estadoPago === "pending" || estadoPago === "in_process"
+            ? "Estamos esperando la confirmación de tu pago."
+            : estadoPago === "rejected"
+            ? "El pago con tarjeta no pudo ser aprobado."
+            : "Estamos verificando el estado de tu pago."}
   </div>
 </div>
 
