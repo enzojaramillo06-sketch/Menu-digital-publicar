@@ -246,7 +246,7 @@ const [estadoPedido, setEstadoPedido] = useState("pendiente")
         ""
       ).toLowerCase();
 
-      if (!["approved", "pending", "rejected"].includes(estadoUrl)) return;
+      if (!["approved", "pending", "in_process", "rejected"].includes(estadoUrl)) return;
 
       setEstadoPago(estadoUrl);
 
